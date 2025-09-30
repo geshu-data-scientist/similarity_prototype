@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: image-similarity-app
+    env: python
+    plan: free
+    # Region where the service is hosted, e.g., Frankfurt or Ohio
+    region: oregon 
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn --chdir /var/data/similarity_app app:app"
+    # Create a persistent disk to store uploads, embeddings, and the database
+    disks:
+      - name: similarity-data
+        mountPath: /var/data/similarity_app
+        sizeGB: 1
