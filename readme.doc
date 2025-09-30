@@ -1,0 +1,32 @@
+Of course! Here is a comprehensive README file for your Streamlit application.
+
+🖼️ Image Similarity Engine
+This is a web application built with Streamlit and PyTorch that allows users to find visually similar images within a growing repository. It uses a pre-trained ResNet-18 model to generate feature vectors (embeddings) for images and compares their similarity to detect duplicates.
+
+✨ Key Features
+Simple Web Interface: Easy-to-use UI built with Streamlit for uploading and processing images.
+
+Deep Learning Powered: Utilizes a pre-trained ResNet-18 model from torchvision for robust feature extraction.
+
+Image Validation: Includes several pre-processing checks to reject invalid or low-quality images (e.g., solid colors, blurry, predominantly black/white).
+
+Efficient Comparison: Performs a fast, vectorized similarity search using PyTorch tensors to compare new images against the entire repository.
+
+Persistent Results: Saves identified duplicate pairs to an SQLite database for tracking and review.
+
+Automatic Repository Updates: Seamlessly integrates new, unique images into the main repository after each comparison.
+
+⚙️ How It Works
+The engine's logic is straightforward yet powerful:
+
+Image Upload & Validation: A user uploads an image. The application runs it through a series of validation checks.
+
+Feature Extraction (Embedding): If the image is valid, it's passed through a pre-trained ResNet-18 model (with its final classification layer removed). The model outputs a 512-dimensional vector, known as an embedding, which serves as a numerical fingerprint of the image's visual content.
+
+Normalization: The embedding vector is normalized to unit length. This step is crucial for using the dot product to calculate cosine similarity.
+
+Similarity Calculation: When the user runs a comparison, the application calculates the cosine similarity between the embeddings of new images and all images in the repository. This is done efficiently via a single matrix multiplication (new_embeddings @ repo_embeddings.T).
+
+Duplicate Identification: If the similarity score between any two images is above a set threshold (e.g., 0.99), they are flagged as a visually similar pair.
+
+Storage: The details of the identified pair are stored in an SQLite database. The new image's embedding is then moved to the repository for future comparisons.
