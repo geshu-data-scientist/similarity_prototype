@@ -1,4 +1,4 @@
-torch==2.8.0
+torch==1.13.1
 torchvision==0.14.1
 numpy==1.26.4
 Pillow
@@ -6,4 +6,5 @@ Pillow
 gunicorn
 opencv-python-headless
 streamlit
+
 
