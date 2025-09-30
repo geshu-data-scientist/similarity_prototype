@@ -1,14 +1,22 @@
+# Top-level key to define all persistent disks
+disks:
+  - name: similarity-data
+    # The mountPath below must match the mountPath in the service
+    mountPath: /var/data/similarity_app
+    sizeGB: 1
+
+# Top-level key to define all services
 services:
   - type: web
     name: image-similarity-app
     env: python
     plan: free
-    # Region where the service is hosted, e.g., Frankfurt or Ohio
     region: oregon 
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn --chdir /var/data/similarity_app app:app"
-    # Create a persistent disk to store uploads, embeddings, and the database
-    disks:
-      - name: similarity-data
-        mountPath: /var/data/similarity_app
-        sizeGB: 1
+    # The start command does not need to change
+    startCommand: "gunicorn app:app"
+    # Use the singular 'disk' key to link to the disk defined above
+    disk:
+      name: similarity-data
+      # The mountPath here must match the mountPath in the disk definition
+      mountPath: /var/data/similarity_app
